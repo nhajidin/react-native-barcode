@@ -1,5 +1,6 @@
+// @flow
 import React from 'react';
-import { StyleSheet, Text, View, Button, ListView, Alert } from 'react-native';
+import { StyleSheet, Text, View, Button, ListView, Alert, type ListViewDataSource } from 'react-native';
 import Expo, { Components, Permissions } from 'expo'; // eslint-disable-line no-unused-vars
 
 const styles = StyleSheet.create({
@@ -11,12 +12,31 @@ const styles = StyleSheet.create({
   },
 });
 
+type ScannerData = {
+  type: string,
+  data: string,
+}
+
+type Props = {
+};
+
 export default class App extends React.Component {
-  constructor(props) {
+  props: Props;
+
+  state: {
+    data: Array<string>,
+    dataSource: ListViewDataSource,
+    hasCameraPermission: boolean | null,
+    scannerOn: boolean,
+  };
+
+  constructor(props: Props) {
     super(props);
+
     const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2,
     });
+
     this.state = {
       data: [],
       dataSource: ds.cloneWithRows([]),
@@ -38,7 +58,7 @@ export default class App extends React.Component {
     }
   };
 
-  handleScanner = scannerData => {
+  handleScanner = (scannerData: ScannerData) => {
     this.setState(prev => {
       const data = prev.data.concat(scannerData.data);
 

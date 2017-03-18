@@ -1,11 +1,22 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, ListView, Alert } from 'react-native';
-import Expo, { Components, Permissions } from 'expo';
+import Expo, { Components, Permissions } from 'expo'; // eslint-disable-line no-unused-vars
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+});
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    const ds = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => r1 !== r2,
+    });
     this.state = {
       data: [],
       dataSource: ds.cloneWithRows([]),
@@ -16,16 +27,16 @@ export default class App extends React.Component {
 
   async componentWillMount() {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
-    this.setState({hasCameraPermission: status === 'granted'});
+    this.setState({ hasCameraPermission: status === 'granted' });
   }
 
   openScanner = () => {
     if (this.state.hasCameraPermission) {
-      this.setState(prev => ({ scannerOn: true }));
+      this.setState({ scannerOn: true });
     } else {
       Alert.alert('No access to camera');
     }
-  }
+  };
 
   handleScanner = scannerData => {
     this.setState(prev => {
@@ -37,9 +48,9 @@ export default class App extends React.Component {
         data,
         dataSource: prev.dataSource.cloneWithRows(data),
         scannerOn: false,
-      }
+      };
     });
-  }
+  };
 
   render() {
     let contents;
@@ -54,13 +65,10 @@ export default class App extends React.Component {
     } else {
       contents = (
         <View style={{ marginTop: 50 }}>
-          <Button
-            title="Scan"
-            onPress={this.openScanner}
-          />
+          <Button title="Scan" onPress={this.openScanner} />
           <ListView
             dataSource={this.state.dataSource}
-            renderRow={(rowData) => <Text>{rowData}</Text>}
+            renderRow={rowData => <Text>{rowData}</Text>}
             enableEmptySections
           />
         </View>
@@ -68,18 +76,9 @@ export default class App extends React.Component {
     }
 
     return (
-    <View style={styles.container}>
-      {contents}
-    </View>
+      <View style={styles.container}>
+        {contents}
+      </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-  },
-});

@@ -62,8 +62,6 @@ export default class App extends React.Component {
     this.setState(prev => {
       const data = prev.data.concat(scannerData.data);
 
-      Alert.alert(JSON.stringify(Components.BarCodeScanner.BarCodeTypes));
-
       return {
         data,
         dataSource: prev.dataSource.cloneWithRows(data),

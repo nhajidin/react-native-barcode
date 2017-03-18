@@ -15,8 +15,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'flex-start',
+    padding: 10,
+  },
+  listItem: {
+    padding: 10,
+    fontSize: 16,
+  },
+  separator: {
+    flex: 1,
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: '#8E8E8E',
   },
 });
 
@@ -95,7 +104,8 @@ export default class App extends React.Component {
           <Button title="Scan" onPress={this.openScanner} />
           <ListView
             dataSource={this.state.dataSource}
-            renderRow={rowData => <Text>{rowData}</Text>}
+            renderRow={rowData => <Text style={styles.listItem}>{rowData}</Text>}
+            renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
             enableEmptySections
           />
         </View>

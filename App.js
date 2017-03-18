@@ -1,6 +1,14 @@
 // @flow
 import React from 'react';
-import { StyleSheet, Text, View, Button, ListView, Alert, type ListViewDataSource } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  ListView,
+  Alert,
+  type ListViewDataSource,
+} from 'react-native';
 import Expo, { Components, Permissions } from 'expo'; // eslint-disable-line no-unused-vars
 
 const styles = StyleSheet.create({
@@ -15,10 +23,9 @@ const styles = StyleSheet.create({
 type ScannerData = {
   type: string,
   data: string,
-}
-
-type Props = {
 };
+
+type Props = {};
 
 export default class App extends React.Component {
   props: Props;
@@ -45,9 +52,11 @@ export default class App extends React.Component {
     };
   }
 
-  async componentWillMount() {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA);
-    this.setState({ hasCameraPermission: status === 'granted' });
+  componentWillMount() {
+    (async () => {
+      const { status } = await Permissions.askAsync(Permissions.CAMERA);
+      this.setState({ hasCameraPermission: status === 'granted' });
+    })();
   }
 
   openScanner = () => {
